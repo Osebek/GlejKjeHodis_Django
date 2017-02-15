@@ -19,6 +19,7 @@ class Location(models.Model):
     picture =  models.ImageField(upload_to=get_image_path)
     title = models.TextField()
     name = models.TextField()
+    address = models.TextField()
 
     def save(self, *args, **kwargs):
         super(Location, self).save(*args,**kwargs)

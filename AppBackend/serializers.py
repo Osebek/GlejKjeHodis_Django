@@ -7,7 +7,7 @@ class LocationSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Location
-        fields = ('id','created','owner','latitude','longtitude','text','picture','title','name')
+        fields = ('id','created','owner','latitude','longtitude','text','picture','title','name','address')
 
     def create(self, validated_data):
         return Location.objects.create(**validated_data)
@@ -19,6 +19,7 @@ class LocationSerializer(serializers.ModelSerializer):
         instance.picture = validate_data.get('picture',instance.picture)
         instance.title = validate_data.get('title',instance.title)
         instance.name = validate_data.get('name',instance.name)
+        instance.address = validate_data.get('address',instance.address)
         instance.save()
         return instance
 
