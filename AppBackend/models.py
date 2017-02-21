@@ -21,10 +21,15 @@ class Location(models.Model):
     name = models.TextField()
     address = models.TextField()
 
+    def __unicode__(self):
+        return "Location: " + self.title
+
     def save(self, *args, **kwargs):
         super(Location, self).save(*args,**kwargs)
     class Meta:
         ordering = ('-created',)
+
+
 
 
 class Path(models.Model):
@@ -34,3 +39,5 @@ class Path(models.Model):
     name = models.TextField()
     city = models.TextField()
     description = models.TextField()
+    def __unicode__(self):
+        return "Path: " + self.name

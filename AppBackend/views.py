@@ -13,7 +13,7 @@ from rest_framework.authentication import TokenAuthentication
 from AppBackend.permissions import IsOwnerOrReadOnly
 from AppBackend.permissions import UserPermissionsDetail
 from django.http import HttpResponse, HttpResponseForbidden
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import parser_classes,api_view
 from rest_framework import mixins
@@ -43,13 +43,15 @@ class LocationAdd(generics.CreateAPIView):
 			return Response(serializer.errors,status=HTTP_201_CREATED)
 		else:
 			return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
-
+@parser_classes((JSONParser,))
 class PathAdd(generics.CreateAPIView):
-	serializer_class = PathSerializer
+	serializer_class = PathUploadSerializer
+	permission_classes = (IsAuthenticated,)
+	print "bla"
 	def post(self,request,format=None):
+		print("Prides not?")
+		print(request.data)
 		serializer = PathUploadSerializer(data=request.data,context={'owner': self.request.user})
-		print("do tuki pridem")
-		print serializer
 		if serializer.is_valid():
 			serializer.save(owner=self.request.user)
 			return Response(serializer.errors,status=HTTP_201_CREATED)
