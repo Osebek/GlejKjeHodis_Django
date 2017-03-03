@@ -41,10 +41,10 @@ class PathSerializer(serializers.ModelSerializer):
 
 class PathUploadSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
-    pathLocations = serializers.HyperlinkedRelatedField(many=True,read_only=True,view_name="pathLocations")	
+
     class Meta:
         model = Path
-        fields = ('id','created','owner','name','pathLocations','city','description')
+        fields = ('id','created','owner','name','city','description')
 
 
 

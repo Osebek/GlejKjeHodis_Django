@@ -45,19 +45,20 @@ class LocationAdd(generics.CreateAPIView):
 			return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
 @parser_classes((JSONParser,))
 class PathAdd(generics.CreateAPIView):
-	serializer_class = PathSerializer
+	serializer_class = PathUploadSerializer
 	permission_classes = (IsAuthenticated,)
 	def post(self,request,format=None):
-		print("Prides not?")
-		print(request.data)
+		pathLocations=request.data['pathLocations']
+		del request.data['pathLocations']
 		serializer = PathUploadSerializer(data=request.data,context={'owner': self.request.user})
-		pathLocations = request.data.pathLocations
 		if serializer.is_valid():
 			serializer.save(owner=self.request.user)
+			newPath = Path.objects.filter(owner=self.request.user).filter(description=request.data['description']).filter(name=request.data['name']).filter(city=request.data['city']).first()
 			for loc in pathLocations:
-				loc = Location.objects.filter(id=loc).first()
-				serializer.pathLocations.add(loc)
-				serializer.save()
+				newLocObj = Location.objects.filter(id=loc).first()
+				newLocObj.save()
+				newPath.pathLocations.add(newLocObj)
+				newPath.save()
 			return Response(serializer.errors,status=HTTP_201_CREATED)
 		else:
 			return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
