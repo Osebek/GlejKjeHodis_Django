@@ -51,8 +51,13 @@ class PathAdd(generics.CreateAPIView):
 		print("Prides not?")
 		print(request.data)
 		serializer = PathUploadSerializer(data=request.data,context={'owner': self.request.user})
+		pathLocations = request.data.pathLocations
 		if serializer.is_valid():
 			serializer.save(owner=self.request.user)
+			for loc in pathLocations:
+				loc = Location.objects.filter(id=loc).first()
+				serializer.pathLocations.add(loc)
+				serializer.save()
 			return Response(serializer.errors,status=HTTP_201_CREATED)
 		else:
 			return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
@@ -99,6 +104,7 @@ class UserDetail(generics.RetrieveAPIView):
 	serializer_class = UserSerializer
 
 class GetCurrentUser(APIView):
+	permission_classes = (IsAuthenticated,)
 	def get(self,request):
 		serializer = UserSerializer(self.request.user)
 		return Response(serializer.data)
