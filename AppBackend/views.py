@@ -45,9 +45,8 @@ class LocationAdd(generics.CreateAPIView):
 			return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
 @parser_classes((JSONParser,))
 class PathAdd(generics.CreateAPIView):
-	serializer_class = PathUploadSerializer
+	serializer_class = PathSerializer
 	permission_classes = (IsAuthenticated,)
-	print "bla"
 	def post(self,request,format=None):
 		print("Prides not?")
 		print(request.data)
@@ -68,9 +67,9 @@ class LocationGetAll(generics.ListAPIView):
 		return Location.objects.all()
 
 class PathGetAll(generics.ListAPIView):
-	queryset = Location.objects.all()
+	permission_classes = (IsAuthenticatedOrReadOnly, )
 	serializer_class = PathSerializer
-
+	queryset = Path.objects.all()
 
 	def get_queryset(self):
 		user = self.request.user
@@ -86,15 +85,12 @@ class PathGetSpecific(generics.RetrieveAPIView):
 	queryset = Path.objects.all()
 
 
-@authentication_classes((IsAdminUser,))
 class UserList(generics.ListAPIView):
-	permissions_classes = (IsAdminUser,)
+	permissions_classes = (IsAuthenticated,)
 	serializer_class = UserSerializer
 	def get_queryset(self):
 		user = self.request.user
 		return User.objects.all()
-
-
 
 
 class UserDetail(generics.RetrieveAPIView):
@@ -102,6 +98,10 @@ class UserDetail(generics.RetrieveAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
+class GetCurrentUser(APIView):
+	def get(self,request):
+		serializer = UserSerializer(self.request.user)
+		return Response(serializer.data)
 
 class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = (TokenAuthentication, BasicAuthentication,)
@@ -111,4 +111,4 @@ class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
     parser_classes = (MultiPartParser, FormParser,)
 
     def perform_create(self,serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(username=self.request.user)

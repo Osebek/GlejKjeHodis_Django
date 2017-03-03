@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'pathList/upload', views.PathAdd.as_view()),
     url(r'pathGetAll/', views.PathGetAll.as_view()),
     url(r'^pathGetSpecific/(?P<pk>[0-9]+)/$', views.PathGetSpecific.as_view()),
-
+    url(r'getCurrentUser/',views.GetCurrentUser.as_view()),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

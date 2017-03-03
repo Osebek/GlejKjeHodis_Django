@@ -34,7 +34,7 @@ class PathSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Path
-        field = ('id','created','owner','pathLocations','name','city','description')
+        fields= ('id','created','owner','pathLocations','name','city','description')
 
     def create(self,validated_data):
         return Path.objects.create(**validated_data)
@@ -43,7 +43,7 @@ class PathUploadSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Path
-        field = ('id','created','owner','name','city','description')
+        fields = ('id','created','owner','name','city','description')
 
 
 

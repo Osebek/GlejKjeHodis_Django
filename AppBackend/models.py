@@ -7,7 +7,7 @@ def get_image_path(instance, filename):
     """
     Puts image in MEDIA_ROOT/photos/instance_id/file
     """
-    return 'locations/%s/%s' % (instance.owner,filename)
+    return '/home/nejcv/Glej_kje_hodis/GlejKjeHodis_Django/static/glejkjehodis/pictures/%s' % (filename)
 
 
 class Location(models.Model):
@@ -41,3 +41,4 @@ class Path(models.Model):
     description = models.TextField()
     def __unicode__(self):
         return "Path: " + self.name
+
