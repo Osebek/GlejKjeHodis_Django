@@ -13,13 +13,13 @@ class LocationSerializer(serializers.ModelSerializer):
         return Location.objects.create(**validated_data)
 
     def update(self,instance, validated_data):
-        instance.latitude = validate_data.get('latitude',instance.latitude)
-        instance.longtitude = validate_data.get('longtitude',instance.longtitude)
-        instance.text = validate_data.get('text',instance.text)
-        instance.picture = validate_data.get('picture',instance.picture)
-        instance.title = validate_data.get('title',instance.title)
-        instance.name = validate_data.get('name',instance.name)
-        instance.address = validate_data.get('address',instance.address)
+        instance.latitude = validated_data.get('latitude',instance.latitude)
+        instance.longtitude = validated_data.get('longtitude',instance.longtitude)
+        instance.text = validated_data.get('text',instance.text)
+        instance.picture = validated_data.get('picture',instance.picture)
+        instance.title = validated_data.get('title',instance.title)
+        instance.name = validated_data.get('name',instance.name)
+        instance.address = validated_data.get('address',instance.address)
         instance.save()
         return instance
 

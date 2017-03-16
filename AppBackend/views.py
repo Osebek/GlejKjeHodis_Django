@@ -98,7 +98,11 @@ class UserList(generics.ListAPIView):
 		user = self.request.user
 		return User.objects.all()
 
-
+class UpdateLocation(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = (IsOwnerOrReadOnly,)
+	queryset = Location.objects.all()
+	serializer_class = LocationSerializer
+		
 class UserDetail(generics.RetrieveAPIView):
 	permissions_classes = (IsAdminUser,)
 	queryset = User.objects.all()
@@ -109,6 +113,13 @@ class GetCurrentUser(APIView):
 	def get(self,request):
 		serializer = UserSerializer(self.request.user)
 		return Response(serializer.data)
+
+class GetUserLocations(generics.ListAPIView):
+	permission_classes = (IsAuthenticated,)
+	serializer_class = LocationSerializer
+	def get_queryset(self):
+		user=self.request.user
+		return Location.objects.filter(owner=user)
 
 class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = (TokenAuthentication, BasicAuthentication,)

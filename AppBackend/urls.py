@@ -16,11 +16,13 @@ urlpatterns = [
     url(r'locationGetAll/', views.LocationGetAll.as_view()),
     url(r'^locationGetSpecific/(?P<pk>[0-9]+)/$', views.LocationGetSpecific.as_view()),
     url(r'^users/$', views.UserList.as_view()),
-	url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+    url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
     url(r'pathList/upload', views.PathAdd.as_view()),
     url(r'pathGetAll/', views.PathGetAll.as_view()),
     url(r'^pathGetSpecific/(?P<pk>[0-9]+)/$', views.PathGetSpecific.as_view()),
+    url(r'^updateLocation/(?P<pk>[0-9]+)/$',views.UpdateLocation.as_view()),
     url(r'getCurrentUser/',views.GetCurrentUser.as_view()),
+    url(r'getUserLocations/',views.GetUserLocations.as_view()),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
